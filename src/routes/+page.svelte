@@ -79,7 +79,7 @@
 	<RuleCard {rule} index={app.cursor} total={app.deck.length} sources={app.sources} />
 
 	<div class="q">
-		<span class="qtitle">How much does this rule steer you today?</span>
+		<span class="qtitle">How much does this belief steer you today?</span>
 		<div class="seg">
 			{#each PULL_LABELS as label, i (label)}
 				<button aria-pressed={answer?.pull === i} onclick={() => app.setPull(rule, i as Pull)}>{label}</button>
@@ -129,7 +129,7 @@
 	</div>
 
 	<form class="addrule" onsubmit={add}>
-		<label class="qtitle" for="custom-rule">Grew up with a rule that isn't here?</label>
+		<label class="qtitle" for="custom-rule">Grew up with a belief that isn't here?</label>
 		<div class="addrow">
 			<input
 				id="custom-rule"

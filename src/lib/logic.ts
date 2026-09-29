@@ -61,21 +61,21 @@ export function summarize(rules: Rule[], sources: Source[]): MapSummary {
 	const dropTop = [...counts].filter((c) => c.drop > 0).sort((a, b) => b.drop - a.drop)[0];
 	if (dropTop && dropTop.id !== 'self') {
 		observations.push(
-			`Most of the rules you'd put down came from ${dropTop.label.toLowerCase()} (${dropTop.drop} of ${drop.length}).`
+			`Most of the beliefs you'd put down came from ${dropTop.label.toLowerCase()} (${dropTop.drop} of ${drop.length}).`
 		);
 	}
 	const self = counts.find((c) => c.id === 'self');
 	if (self && self.mine > 0) {
 		observations.push(
-			`${self.mine} of the rules you keep are backed by your own experience, not only by what you were told.`
+			`${self.mine} of the beliefs you keep are backed by your own experience, not only by what you were told.`
 		);
 	}
 	const heavy = drop.filter((r) => r.answer!.pull === 3).length;
 	if (heavy) {
 		observations.push(
 			heavy === 1
-				? 'One rule you wouldn\'t choose still runs you strongly. That is the best place to start.'
-				: `${heavy} rules you wouldn't choose still run you strongly. Those are the best place to start.`
+				? 'One belief you wouldn\'t choose still runs you strongly. That is the best place to start.'
+				: `${heavy} beliefs you wouldn't choose still run you strongly. Those are the best place to start.`
 		);
 	}
 
@@ -100,7 +100,7 @@ export function sourceText(rule: Rule, sources: Source[]): string {
 
 export function mapAsText(rules: Rule[], sources: Source[]): string {
 	const s = summarize(rules, sources);
-	const lines = ['SAMSKARA: MY RULES MAP', ''];
+	const lines = ['SAMSKARA: MY BELIEFS MAP', ''];
 	const group = (title: string, list: Rule[], withRewrite: boolean) => {
 		if (!list.length) return;
 		lines.push(title);

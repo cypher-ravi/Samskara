@@ -28,5 +28,5 @@
 	{/each}
 </div>
 <p class="need">
-	A rule can come from more than one place, so the counts can add up to more than the number of rules.
+	A belief can come from more than one place, so the counts can add up to more than the number of beliefs.
 </p>

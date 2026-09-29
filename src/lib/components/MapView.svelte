@@ -66,7 +66,7 @@
 	{#if example}
 		<h1>Meera's map</h1>
 		<p class="summary">
-			Meera, 27, sorted {s.sorted} rules. {s.carried.length} still steer her. She'd choose
+			Meera, 27, sorted {s.sorted} beliefs. {s.carried.length} still steer her. She'd choose
 			<em>{s.mine.length}</em> as her own, and <span class="h">{s.drop.length}</span> were handed to her.
 			She's still deciding about {s.unsure.length}.
 		</p>
@@ -78,11 +78,11 @@
 		</p>
 	{:else if s.carried.length === 0}
 		<h1>Your map</h1>
-		<p class="summary">You sorted {s.sorted} rules and set all of them aside as not part of you.</p>
+		<p class="summary">You sorted {s.sorted} beliefs and set all of them aside as not part of you.</p>
 	{:else}
 		<h1>Your map</h1>
 		<p class="summary">
-			You sorted {s.sorted} rules. {s.carried.length} still steer you. You'd choose
+			You sorted {s.sorted} beliefs. {s.carried.length} still steer you. You'd choose
 			<em>{s.mine.length}</em> of them as your own, and <span class="h">{s.drop.length}</span>
 			{plural(s.drop.length, 'was', 'were')} handed to you{#if s.unsure.length}. You're still deciding
 				about {s.unsure.length}{/if}.
@@ -101,9 +101,9 @@
 		<RootsMap {rules} {sources} />
 		{#if example}
 			<div class="obs">
-				<p><strong>Parents is her thickest root.</strong> Eight rules grew from it, and five of them now lie on the ground.</p>
+				<p><strong>Parents is her thickest root.</strong> Eight beliefs grew from it, and five of them now lie on the ground.</p>
 				<p><strong>Everything from school was let go.</strong> That tells her which voice to question first.</p>
-				<p><strong>Both rules from her own experience still glow on the tree.</strong> Beliefs she earned herself are the ones she keeps.</p>
+				<p><strong>Both beliefs from her own experience still glow on the tree.</strong> Beliefs she earned herself are the ones she keeps.</p>
 				<p><strong>Her three buds</strong> (anger, family duty and a stable job) are the next things to sit with.</p>
 			</div>
 		{/if}
@@ -117,7 +117,7 @@
 <section class="block">
 	<h2>{example ? 'Handed to her' : 'Handed to you'}</h2>
 	<p class="lede">
-		Rules {example ? 'she carries' : 'you carry'} but wouldn't choose. Each has a suggested rewrite and a
+		Beliefs {example ? 'she carries' : 'you carry'} but wouldn't choose. Each has a suggested rewrite and a
 		small experiment.{#if !example} Edit both until they sound like you.{/if}
 	</p>
 	{#if s.drop.length}
@@ -132,7 +132,7 @@
 							id="rw-{r.id}"
 							rows="2"
 							readonly={example}
-							placeholder="Write the rule you'd choose instead"
+							placeholder="Write the belief you'd choose instead"
 							value={r.answer!.rewrite ?? r.suggestedRewrite}
 							oninput={(e) => !example && app.setReflection(r, 'rewrite', e.currentTarget.value)}
 						></textarea>
@@ -143,7 +143,7 @@
 							id="ex-{r.id}"
 							rows="2"
 							readonly={example}
-							placeholder="One small action that bends the old rule"
+							placeholder="One small action that bends the old belief"
 							value={r.answer!.experiment ?? r.suggestedExperiment}
 							oninput={(e) => !example && app.setReflection(r, 'experiment', e.currentTarget.value)}
 						></textarea>
@@ -192,7 +192,7 @@
 
 {#if s.notMe}
 	<p class="need">
-		{s.notMe} rule{s.notMe > 1 ? 's' : ''} set aside as not part of {example ? 'her' : 'you'}.
+		{s.notMe} belief{s.notMe > 1 ? 's' : ''} set aside as not part of {example ? 'her' : 'you'}.
 	</p>
 {/if}
 
@@ -206,7 +206,7 @@
 			<div>
 				<h3>Ready to go deeper?</h3>
 				<p class="prompt">
-					There {app.remaining === 1 ? 'is 1 more rule' : `are ${app.remaining} more rules`} you haven't
+					There {app.remaining === 1 ? 'is 1 more belief' : `are ${app.remaining} more beliefs`} you haven't
 					sorted yet. Your map will grow as you add them.
 				</p>
 			</div>

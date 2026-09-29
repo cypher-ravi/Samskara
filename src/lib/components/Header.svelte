@@ -34,7 +34,7 @@
 	</div>
 	{#if confirming}
 		<div class="notice resetbar" role="alertdialog" aria-label="Start over">
-			<span>Clear every answer and any rules you added, and start again from the first card?</span>
+			<span>Clear every answer and any beliefs you added, and start again from the first card?</span>
 			<span class="resetactions">
 				<button class="btn ghost" onclick={startOver}>Yes, start over</button>
 				<button class="linkbtn" onclick={() => (confirming = false)}>Cancel</button>
@@ -50,11 +50,11 @@
 			>
 		</h1>
 		<p class="lede">
-			You picked up most of your rules for life long before you could question them. Sort them here to
+			You picked up most of your beliefs long before you could question them. Sort them here to
 			find out which are really yours.
 		</p>
 		<ol class="steps">
-			<li><strong>Rate it.</strong> How much does the rule steer you today?</li>
+			<li><strong>Rate it.</strong> How much does the belief steer you today?</li>
 			<li><strong>Trace it.</strong> Where did you pick it up?</li>
 			<li><strong>Decide.</strong> Would you choose it now?</li>
 		</ol>

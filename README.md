@@ -1,19 +1,19 @@
 # Samskara
 
-**Which of your rules did you actually choose?**
+**Some beliefs you chose. Most were handed to you.**
 
-In Indian philosophy, *samskaras* are the impressions left by past experience that quietly shape how we think and act. Many of them arrive as unspoken rules: *don't need too much*, *what will people say?*, *rest is laziness*. We absorb them from parents, family, school, society, faith and media long before we can question them.
+In Indian philosophy, *samskaras* are the impressions left by past experience that quietly shape how we think and act. Many of them arrive as beliefs: *don't need too much*, *what will people say?*, *rest is laziness*. We absorb them from parents, family, school, society, faith and media long before we can question them.
 
-Samskara is a private reflection tool that helps you see those rules, where they came from, and which ones you would still choose today.
+Samskara is a private reflection tool that helps you see those beliefs, where they came from, and which ones you would still choose today.
 
 ## How it works
 
-1. **Choose a length.** Quick (8 cards, about 3 minutes), Medium (12, the default) or Full (all 24). The most widely felt rules come first, so even a short session covers worth, needs, feelings, family and society. You can go deeper later.
-2. **Sort the deck.** One card at a time. You can add rules of your own.
-3. **Rate the pull.** Mark how much each rule steers you today, from *Not me* to *It runs me*.
+1. **Choose a length.** Quick (8 cards, about 3 minutes), Medium (12, the default) or Full (all 24). The most widely felt beliefs come first, so even a short session covers worth, needs, feelings, family and society. You can go deeper later.
+2. **Sort the deck.** One card at a time. You can add beliefs of your own.
+3. **Rate the pull.** Mark how much each belief steers you today, from *Not me* to *It runs me*.
 4. **Stamp the source.** Mark where you picked it up: parents, extended family, school, neighbours and society, religion and culture, friends, media, a partner, or your own experience.
-5. **Choose.** Decide whether each rule is *Mine*, *Handed to me*, or *Not sure yet*.
-6. **See your roots map.** Your answers grow into a tree: sources are roots, rules you keep are glowing leaves, and rules you let go of lie on the ground. Each handed-down rule comes with an editable rewrite and one small experiment for the week. There's an example map at `/example`, and you can start over at any time.
+5. **Choose.** Decide whether each belief is *Mine*, *Handed to me*, or *Not sure yet*.
+6. **See your roots map.** Your answers grow into a tree: sources are roots, beliefs you keep are glowing leaves, and beliefs you let go of lie on the ground. Each handed-down belief comes with an editable rewrite and one small experiment for the week. There's an example map at `/example`, and you can start over at any time.
 
 ## Stack
 
@@ -80,5 +80,5 @@ Every push to `main` builds the site and publishes it with GitHub Actions. In th
 
 - **No diagnosis, no labels.** You see your own patterns instead of being told what you are.
 - **Private by design.** No server, account, or tracking.
-- **Small actions over explanations.** Every rule you want to let go of ends with one concrete thing to try.
+- **Small actions over explanations.** Every belief you want to let go of ends with one concrete thing to try.
 - **Not therapy.** Samskara is a reflection tool. If things feel heavy, talk to someone. In India, you can call Tele-MANAS at **14416** or **1-800-891-4416** (free, 24/7). Elsewhere, see [findahelpline.com](https://findahelpline.com).

@@ -198,7 +198,7 @@ function setCursor(cursor: number): void {
 
 function addRule(text: string): Rule {
 	const clean = text.trim().replace(/\s+/g, ' ').slice(0, 160);
-	if (clean.length < 4) throw new Error('Write the rule in a few words first.');
+	if (clean.length < 4) throw new Error('Write the belief in a few words first.');
 	const id = `c_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
 	const position = Number(db.selectValue('SELECT COALESCE(MAX(position), 0) + 1 FROM rules'));
 	db.exec({

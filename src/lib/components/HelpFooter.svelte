@@ -1,6 +1,6 @@
 <footer class="help">
 	<span>
-		This is a reflection tool, not therapy or a diagnosis. Old rules often formed for good reasons, so
+		This is a reflection tool, not therapy or a diagnosis. Old beliefs often formed for good reasons, so
 		go gently.
 	</span>
 	<span>

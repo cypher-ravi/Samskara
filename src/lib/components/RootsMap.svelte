@@ -136,7 +136,7 @@
 
 {#if carried.length}
 	<div class="roots-wrap">
-		<svg {viewBox} class="roots" role="group" aria-label="Your roots map: {carried.length} rules and the {roots.length} places they came from">
+		<svg {viewBox} class="roots" role="group" aria-label="Your roots map: {carried.length} beliefs and the {roots.length} places they came from">
 			<defs>
 				<filter id="leafglow" x="-80%" y="-80%" width="260%" height="260%">
 					<feGaussianBlur stdDeviation="3.2" result="b" />
@@ -167,7 +167,7 @@
 					class:on={selSource?.id === s.id}
 					role="button"
 					tabindex="0"
-					aria-label="{s.label}: {s.rules.length} rule{s.rules.length === 1 ? '' : 's'}"
+					aria-label="{s.label}: {s.rules.length} belief{s.rules.length === 1 ? '' : 's'}"
 					aria-pressed={selSource?.id === s.id}
 					onclick={() => pick('source', s.id)}
 					onkeydown={(e) => onKey(e, 'source', s.id)}
@@ -238,10 +238,10 @@
 	</div>
 
 	<div class="roots-legend">
-		<span><i class="lg mine"></i>Glowing leaf: a rule you keep</span>
+		<span><i class="lg mine"></i>Glowing leaf: a belief you keep</span>
 		<span><i class="lg unsure"></i>Bud: still deciding</span>
-		<span><i class="lg drop"></i>Fallen leaf: a rule you let go</span>
-		<span><i class="lg root"></i>Thicker root: more rules came from there</span>
+		<span><i class="lg drop"></i>Fallen leaf: a belief you let go</span>
+		<span><i class="lg root"></i>Thicker root: more beliefs came from there</span>
 	</div>
 
 	<div class="roots-panel" aria-live="polite">
@@ -253,14 +253,14 @@
 				<p class="panel-new"><span class="label">Your version</span>{selRule.answer!.rewrite ?? selRule.suggestedRewrite}</p>
 			{/if}
 		{:else if selSource}
-			<span class="label">From {selSource.label} · {selSource.rules.length} rule{selSource.rules.length === 1 ? '' : 's'}</span>
+			<span class="label">From {selSource.label} · {selSource.rules.length} belief{selSource.rules.length === 1 ? '' : 's'}</span>
 			<ul class="panel-list">
 				{#each selSource.rules as r (r.id)}
 					<li class="st-{r.answer!.choice}"><span>{r.text}</span><em>{STATUS[r.answer!.choice!]}</em></li>
 				{/each}
 			</ul>
 		{:else}
-			<p class="prompt">Tap a leaf to see its rule, or tap a root to see everything that grew from it.</p>
+			<p class="prompt">Tap a leaf to see its belief, or tap a root to see everything that grew from it.</p>
 		{/if}
 	</div>
 {/if}
