@@ -161,3 +161,10 @@ html, body{margin:0}
 code{font-family:var(--mono); font-size:.9em; color:var(--ink); background:var(--well); padding:1px 5px; border-radius:4px}
 @media (prefers-reduced-motion: reduce){ .loading .dot{animation:none} }
 .filebtn.disabled{opacity:.35; pointer-events:none}
+.steps{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; counter-reset:step}
+.steps li{counter-increment:step; display:flex; flex-direction:column; gap:2px; font-size:14px; color:var(--muted); padding:12px 14px; border:1px solid var(--line); border-radius:14px; background:var(--glass-2); min-width:0}
+.steps li::before{content:counter(step); font-family:var(--mono); font-size:11px; color:var(--saffron); letter-spacing:.1em}
+.steps strong{color:var(--ink); font-size:15px}
+@media (max-width:520px){ .steps{grid-template-columns:1fr} }
+details.numbers{display:flex; flex-direction:column; gap:12px}
+details.numbers summary{cursor:pointer; color:var(--saffron); font-weight:600; font-size:14px; margin-bottom:12px}

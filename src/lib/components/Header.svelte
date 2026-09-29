@@ -2,7 +2,7 @@
 	import { base } from '$app/paths';
 	import { app } from '$lib/app.svelte';
 
-	let { view }: { view: 'deck' | 'map' } = $props();
+	let { view }: { view: 'deck' | 'map' | 'example' } = $props();
 </script>
 
 <header class="top">
@@ -12,15 +12,24 @@
 		</a>
 		{#if view === 'deck' && app.sortedCount >= 3}
 			<a class="linkbtn" href="{base}/map">See my map ({app.sortedCount} sorted)</a>
-		{:else if view === 'map'}
+		{:else if view !== 'deck'}
 			<a class="linkbtn" href="{base}/">Back to the deck</a>
 		{/if}
 	</div>
 	{#if view === 'deck'}
-		<h1>Which of your rules did you <span class="glow">actually choose?</span></h1>
+		<h1>Some beliefs you chose. <span class="glow">Most were handed to you.</span></h1>
 		<p class="lede">
-			Some rules you live by were handed to you long before you could question them. Sort each card:
-			how much it steers you, where you picked it up, and whether you'd choose it today.
+			You picked up most of your rules for life long before you could question them. Sort them here to
+			find out which are really yours.
+		</p>
+		<ol class="steps">
+			<li><strong>Rate it.</strong> How much does the rule steer you today?</li>
+			<li><strong>Trace it.</strong> Where did you pick it up?</li>
+			<li><strong>Decide.</strong> Would you choose it now?</li>
+		</ol>
+		<p class="privacy">
+			At the end, your answers grow into a map of roots and leaves.
+			<a href="{base}/example">See an example map</a> first.
 		</p>
 		<p class="privacy">
 			{#if app.persistent}
