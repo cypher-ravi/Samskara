@@ -52,3 +52,22 @@ export const SEED_RULES: SeedRule[] = [
 	{ id: 'r23', category: 'Body', text: 'My body is something to fix.', rewrite: 'My body is where I live, not a project.', experiment: 'Do one thing for your body this week because it feels good, not to change it.' },
 	{ id: 'r24', category: 'Roles', text: "My gender decides what I'm allowed to feel or want.", rewrite: "My feelings and wants aren't decided by my gender.", experiment: 'Notice one thing you want but hold back on because of your gender, and take one step toward it.' }
 ];
+
+export type DeckSize = 'quick' | 'medium' | 'full';
+
+/** How many starting rules each deck length shows. Rules the person added are always included. */
+export const DECK_SIZES: { id: DeckSize; label: string; cards: number; minutes: number }[] = [
+	{ id: 'quick', label: 'Quick', cards: 8, minutes: 3 },
+	{ id: 'medium', label: 'Medium', cards: 12, minutes: 5 },
+	{ id: 'full', label: 'Full', cards: SEED_RULES.length, minutes: 10 }
+];
+
+/**
+ * The order cards are dealt in: the most widely felt rules first, spread across themes, so a short
+ * session still touches worth, needs, feelings, family and society.
+ */
+export const DECK_ORDER: string[] = [
+	'r9', 'r3', 'r1', 'r19', 'r5', 'r15', 'r11', 'r21', // quick
+	'r14', 'r20', 'r8', 'r6', // medium
+	'r2', 'r4', 'r7', 'r10', 'r12', 'r13', 'r16', 'r17', 'r18', 'r22', 'r23', 'r24' // full
+];

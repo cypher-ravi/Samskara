@@ -4,6 +4,7 @@
 	import { app } from '$lib/app.svelte';
 	import { PULL_LABELS, isComplete, status } from '$lib/logic';
 	import type { Choice, Pull } from '$lib/db/types';
+	import { DECK_SIZES } from '$lib/data/seed';
 	import Header from '$lib/components/Header.svelte';
 	import RuleCard from '$lib/components/RuleCard.svelte';
 
@@ -15,7 +16,8 @@
 
 	let rule = $derived(app.current);
 	let answer = $derived(rule?.answer ?? null);
-	let isLast = $derived(app.cursor === app.rules.length - 1);
+	let isLast = $derived(app.cursor === app.deck.length - 1);
+	let deckDone = $derived(app.deck.filter((r) => isComplete(r.answer)).length);
 	let need = $derived.by(() => {
 		if (!answer) return 'Pick how much it steers you.';
 		if (answer.pull > 0 && !answer.sources.length) return 'Pick at least one place it came from.';
@@ -42,8 +44,27 @@
 <Header view="deck" />
 
 {#if rule}
-	<div class="ticks" aria-label="Progress: {app.sortedCount} of {app.rules.length} sorted">
-		{#each app.rules as r, i (r.id)}
+	<div class="decksize">
+		<span class="qtitle">How long do you have?</span>
+		<div class="sizes" role="radiogroup" aria-label="Deck length">
+			{#each DECK_SIZES as d (d.id)}
+				<button
+					role="radio"
+					aria-checked={app.deckSize === d.id}
+					class="size"
+					onclick={() => app.setDeckSize(d.id)}
+				>
+					<strong>{d.label}</strong><span>{d.cards} cards · ~{d.minutes} min</span>
+				</button>
+			{/each}
+		</div>
+	</div>
+
+	<div class="progressrow">
+		<span class="label">{deckDone} of {app.deck.length} sorted</span>
+	</div>
+	<div class="ticks" aria-label="Progress: {deckDone} of {app.deck.length} sorted">
+		{#each app.deck as r, i (r.id)}
 			<button
 				class="tick {status(r.answer)}"
 				class:current={i === app.cursor}
@@ -55,7 +76,7 @@
 		{/each}
 	</div>
 
-	<RuleCard {rule} index={app.cursor} total={app.rules.length} sources={app.sources} />
+	<RuleCard {rule} index={app.cursor} total={app.deck.length} sources={app.sources} />
 
 	<div class="q">
 		<span class="qtitle">How much does this rule steer you today?</span>

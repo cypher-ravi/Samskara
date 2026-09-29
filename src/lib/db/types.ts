@@ -31,6 +31,7 @@ export interface Snapshot {
 	sources: Source[];
 	rules: Rule[];
 	cursor: number;
+	deckSize: string | null;
 }
 
 export interface AnswerInput {
@@ -53,6 +54,7 @@ export interface Ops {
 	saveReflection: { payload: ReflectionInput; result: void };
 	logAnswer: { payload: string; result: void };
 	setCursor: { payload: number; result: void };
+	setMeta: { payload: { key: string; value: string }; result: void };
 	addRule: { payload: string; result: Rule };
 	exportDb: { payload: void; result: Uint8Array };
 	importDb: { payload: Uint8Array; result: void };

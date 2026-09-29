@@ -44,6 +44,7 @@ export const db = {
 	saveReflection: (input: Ops['saveReflection']['payload']) => call('saveReflection', input),
 	logAnswer: (ruleId: string) => call('logAnswer', ruleId),
 	setCursor: (cursor: number) => call('setCursor', cursor),
+	setMeta: (key: string, value: string) => call('setMeta', { key, value }),
 	addRule: (text: string) => call('addRule', text),
 	exportDb: () => call('exportDb'),
 	importDb: (bytes: Uint8Array) => call('importDb', bytes, [bytes.buffer]),

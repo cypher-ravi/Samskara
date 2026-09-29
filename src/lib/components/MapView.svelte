@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import { app } from '$lib/app.svelte';
 	import { PULL_LABELS, mapAsText, sourceText, summarize } from '$lib/logic';
@@ -45,6 +46,13 @@
 		const file = input.files?.[0];
 		input.value = '';
 		if (file) dataMessage = await app.importFile(file);
+	}
+
+	function goDeeper() {
+		app.setDeckSize('full');
+		app.goTo(app.firstUnsorted());
+		goto(`${base}/`);
+		window.scrollTo({ top: 0 });
 	}
 
 	async function reset() {
@@ -193,8 +201,20 @@
 		<a class="btn" href="{base}/" style="text-decoration:none">Start sorting my own</a>
 	</div>
 {:else}
+	{#if app.deckSize !== 'full' && app.remaining > 0}
+		<div class="deeper">
+			<div>
+				<h3>Ready to go deeper?</h3>
+				<p class="prompt">
+					There {app.remaining === 1 ? 'is 1 more rule' : `are ${app.remaining} more rules`} you haven't
+					sorted yet. Your map will grow as you add them.
+				</p>
+			</div>
+			<button class="btn" onclick={goDeeper}>Sort {app.remaining} more</button>
+		</div>
+	{/if}
 	<div class="maptools">
-		<button class="btn" onclick={copy}>Copy my map as text</button>
+		<button class="btn ghost" onclick={copy}>Copy my map as text</button>
 		<a
 			class="btn ghost"
 			href="{base}/"

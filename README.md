@@ -8,11 +8,12 @@ Samskara is a private reflection tool that helps you see those rules, where they
 
 ## How it works
 
-1. **Sort the deck.** Go through 24 common inherited rules, one card at a time, and add your own.
-2. **Rate the pull.** Mark how much each rule steers you today, from *Not me* to *It runs me*.
-3. **Stamp the source.** Mark where you picked it up: parents, extended family, school, neighbours and society, religion and culture, friends, media, a partner, or your own experience.
-4. **Choose.** Decide whether each rule is *Mine*, *Handed to me*, or *Not sure yet*.
-5. **See your map.** See which sources gave you the rules you keep and the rules you'd put down. Each handed-down rule comes with an editable rewrite and one small experiment for the week.
+1. **Choose a length.** Quick (8 cards, about 3 minutes), Medium (12, the default) or Full (all 24). The most widely felt rules come first, so even a short session covers worth, needs, feelings, family and society. You can go deeper later.
+2. **Sort the deck.** One card at a time. You can add rules of your own.
+3. **Rate the pull.** Mark how much each rule steers you today, from *Not me* to *It runs me*.
+4. **Stamp the source.** Mark where you picked it up: parents, extended family, school, neighbours and society, religion and culture, friends, media, a partner, or your own experience.
+5. **Choose.** Decide whether each rule is *Mine*, *Handed to me*, or *Not sure yet*.
+6. **See your roots map.** Your answers grow into a tree: sources are roots, rules you keep are glowing leaves, and rules you let go of lie on the ground. Each handed-down rule comes with an editable rewrite and one small experiment for the week. There's an example map at `/example`, and you can start over at any time.
 
 ## Stack
 

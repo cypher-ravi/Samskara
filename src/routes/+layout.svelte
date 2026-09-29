@@ -15,6 +15,9 @@
 	<title>Samskara</title>
 </svelte:head>
 
+<div class="sky" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
 <div class="wrap">
 	{#if app.status === 'loading'}
 		<p class="loading"><span class="dot" aria-hidden="true"></span>Opening your private database…</p>

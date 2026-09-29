@@ -130,8 +130,14 @@ function snapshot(): Snapshot {
 		.selectObjects(`${RULE_SELECT} ORDER BY r.position, r.created_at`)
 		.map((row: any) => toRule(row, links.get(row.id) ?? []));
 	const sources = db.selectObjects('SELECT id, label FROM sources ORDER BY position');
-	const cursor = Number(db.selectValue("SELECT value FROM meta WHERE key = 'cursor'") ?? 0);
-	return { persistent, sources, rules, cursor: Number.isFinite(cursor) ? cursor : 0 };
+	const cursor = Number(getMeta('cursor') ?? 0);
+	return {
+		persistent,
+		sources,
+		rules,
+		cursor: Number.isFinite(cursor) ? cursor : 0,
+		deckSize: getMeta('deckSize')
+	};
 }
 
 function saveAnswer({ ruleId, pull, choice, sources }: AnswerInput): void {
@@ -174,12 +180,20 @@ function logAnswer(ruleId: string): void {
 	});
 }
 
-function setCursor(cursor: number): void {
+function getMeta(key: string): string | null {
+	return db.selectValue('SELECT value FROM meta WHERE key = ?', [key]) ?? null;
+}
+
+function setMeta(key: string, value: string): void {
 	db.exec({
-		sql: `INSERT INTO meta (key, value) VALUES ('cursor', ?)
+		sql: `INSERT INTO meta (key, value) VALUES (?, ?)
 		      ON CONFLICT (key) DO UPDATE SET value = excluded.value`,
-		bind: [String(cursor)]
+		bind: [key, value]
 	});
+}
+
+function setCursor(cursor: number): void {
+	setMeta('cursor', String(cursor));
 }
 
 function addRule(text: string): Rule {
@@ -248,6 +262,8 @@ async function handle(op: OpName, payload: any): Promise<{ result: unknown; tran
 			return { result: logAnswer(payload), transfer: [] };
 		case 'setCursor':
 			return { result: setCursor(payload), transfer: [] };
+		case 'setMeta':
+			return { result: setMeta(String(payload.key), String(payload.value)), transfer: [] };
 		case 'addRule':
 			return { result: addRule(payload), transfer: [] };
 		case 'exportDb': {
