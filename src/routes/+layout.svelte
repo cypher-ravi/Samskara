@@ -12,7 +12,7 @@
 </script>
 
 <svelte:head>
-	<title>Samskara</title>
+	<title>Samskara · a self-reflection tool</title>
 </svelte:head>
 
 <div class="sky" aria-hidden="true"></div>

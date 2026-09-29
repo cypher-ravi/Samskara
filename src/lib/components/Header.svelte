@@ -42,6 +42,7 @@
 		</div>
 	{/if}
 	{#if view === 'deck'}
+		<span class="eyebrow">A self-reflection tool</span>
 		<h1 class="hero">
 			<span class="line">Some beliefs you chose.</span>
 			<span class="line glow">Most were handed to you.</span>
@@ -50,8 +51,9 @@
 			>
 		</h1>
 		<p class="lede">
-			You picked up most of your beliefs long before you could question them. Sort them here to
-			find out which are really yours.
+			Samskara helps you notice the beliefs you picked up from family, school and society long before
+			you could question them. See where each one came from, then decide which ones you still want to
+			keep.
 		</p>
 		<ol class="steps">
 			<li><strong>Rate it.</strong> How much does the belief steer you today?</li>

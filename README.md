@@ -4,7 +4,7 @@
 
 In Indian philosophy, *samskaras* are the impressions left by past experience that quietly shape how we think and act. Many of them arrive as beliefs: *don't need too much*, *what will people say?*, *rest is laziness*. We absorb them from parents, family, school, society, faith and media long before we can question them.
 
-Samskara is a private reflection tool that helps you see those beliefs, where they came from, and which ones you would still choose today.
+Samskara is a private self-reflection tool that helps you see those beliefs, where they came from, and which ones you would still choose today.
 
 ## How it works
 
