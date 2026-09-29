@@ -331,7 +331,7 @@
 		display: flex; flex-direction: column; gap: 8px; padding: 16px 18px; min-height: 64px;
 		border: 1px solid var(--line); border-radius: 16px; background: var(--glass-2);
 	}
-	.panel-rule { font-family: var(--display); font-style: italic; font-weight: 500; font-size: 24px; line-height: 1.25; }
+	.panel-rule { font-family: var(--display); font-weight: 600; font-size: 19px; line-height: 1.35; letter-spacing: -0.01em; }
 	.panel-new { display: flex; flex-direction: column; gap: 2px; color: var(--saffron); }
 	.panel-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 	.panel-list li { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; font-size: 15px; }
