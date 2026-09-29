@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '@fontsource-variable/manrope';
 	import '../app.css';
 	import { onMount } from 'svelte';
 	import { app } from '$lib/app.svelte';
@@ -6,6 +7,7 @@
 
 	let { children } = $props();
 
+	// Start the local database straight away, but never make a page wait for it to appear.
 	onMount(() => {
 		app.load();
 	});
@@ -16,26 +18,22 @@
 </svelte:head>
 
 <div class="sky" aria-hidden="true"></div>
-<div class="grain" aria-hidden="true"></div>
 
 <div class="wrap">
-	{#if app.status === 'loading'}
-		<p class="loading"><span class="dot" aria-hidden="true"></span>Opening your private database…</p>
-	{:else if app.status === 'error'}
+	{#if app.status === 'error'}
 		<div class="notice error" role="alert">
 			<span>
 				Samskara couldn't open its local database: {app.error}. Try reloading the page, or use a recent
 				version of Chrome, Edge, Firefox or Safari.
 			</span>
 		</div>
-	{:else}
-		{#if app.notice}
-			<div class="notice" role="status">
-				<span>{app.notice}</span>
-				<button onclick={() => (app.notice = '')}>Dismiss</button>
-			</div>
-		{/if}
-		{@render children()}
 	{/if}
+	{#if app.notice}
+		<div class="notice" role="status">
+			<span>{app.notice}</span>
+			<button onclick={() => (app.notice = '')}>Dismiss</button>
+		</div>
+	{/if}
+	{@render children()}
 	<HelpFooter />
 </div>

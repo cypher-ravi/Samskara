@@ -20,6 +20,7 @@
     "vite": "^7.0.0"
   },
   "dependencies": {
-    "@sqlite.org/sqlite-wasm": "latest"
+    "@sqlite.org/sqlite-wasm": "latest",
+    "@fontsource-variable/manrope": "^5.1.0"
   }
 }

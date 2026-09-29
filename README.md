@@ -21,6 +21,7 @@ Samskara is a private self-reflection tool that helps you see those beliefs, whe
 | Database | [SQLite compiled to WebAssembly](https://sqlite.org/wasm) (`@sqlite.org/sqlite-wasm`) |
 | Storage | Origin Private File System through the `opfs-sahpool` VFS, run in a Web Worker |
 | Build | Vite, `@sveltejs/adapter-static` |
+| Font | Manrope, self-hosted via `@fontsource-variable/manrope` |
 | Hosting | GitHub Pages, deployed by GitHub Actions |
 
 ### Local-first by design
@@ -58,8 +59,10 @@ src/
     deck.ts          mixed and adaptive card order, card formats
     components/      Header, RuleCard, SourceBars, HelpFooter
   routes/
-    +page.svelte     the deck
-    map/+page.svelte the map and data controls
+    +page.svelte          landing page (loads instantly; the database starts in the background)
+    reflect/+page.svelte  step-by-step session: areas → length → one question per screen
+    map/+page.svelte      the map, in tabs: tree, let go, kept, deciding, more
+    example/+page.svelte  a fictional example map
 ```
 
 ## Develop
