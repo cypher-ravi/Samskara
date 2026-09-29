@@ -8,12 +8,10 @@ Samskara is a private self-reflection tool that helps you see those beliefs, whe
 
 ## How it works
 
-1. **Choose a length.** Quick (8 cards, about 3 minutes), Medium (12, the default) or Full (all 24). The most widely felt beliefs come first, so even a short session covers worth, needs, feelings, family and society. You can go deeper later.
-2. **Sort the deck.** One card at a time. You can add beliefs of your own.
-3. **Rate the pull.** Mark how much each belief steers you today, from *Not me* to *It runs me*.
-4. **Stamp the source.** Mark where you picked it up: parents, extended family, school, neighbours and society, religion and culture, friends, media, a partner, or your own experience.
-5. **Choose.** Decide whether each belief is *Mine*, *Handed to me*, or *Not sure yet*.
-6. **See your roots map.** Your answers grow into a tree: sources are roots, beliefs you keep are glowing leaves, and beliefs you let go of lie on the ground. Each handed-down belief comes with an editable rewrite and one small experiment for the week. There's an example map at `/example`, and you can start over at any time.
+1. **Choose areas of life.** Career & work, relationships, parents & family, self-worth, emotions, friendships, money, body & health, society & culture, or gender & roles. Two or three is a good start.
+2. **Choose a length.** Quick (8 cards), Medium (12) or Everything in your areas.
+3. **Sort the beliefs.** 66 beliefs in all, dealt in a mixed order so areas take turns. Cards come in three forms: the standard card (how much it steers you, where it came from, do you choose it), a "which sounds more like your inner voice?" card, and a "whose voice says this?" card. After a few strong answers, beliefs that share a deeper theme with them come sooner.
+4. **See your roots map.** Your answers grow into a line-drawn tree: sources are roots, beliefs you keep are leaves, and beliefs you let go of lie on the ground. Each handed-down belief comes with an editable rewrite and one small experiment for the week. There's an example map at `/example`, and you can start over at any time.
 
 ## Stack
 
@@ -54,9 +52,10 @@ src/
       client.ts      typed request/response wrapper around the worker
       schema.ts      migrations
       types.ts       shared types
-    data/seed.ts     starting rules and sources
+    data/seed.ts     life areas, beliefs (with deeper themes) and sources
     app.svelte.ts    app state (runes); writes every change to SQLite
     logic.ts         map calculations and text export
+    deck.ts          mixed and adaptive card order, card formats
     components/      Header, RuleCard, SourceBars, HelpFooter
   routes/
     +page.svelte     the deck

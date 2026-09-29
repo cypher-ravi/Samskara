@@ -32,6 +32,10 @@ export interface Snapshot {
 	rules: Rule[];
 	cursor: number;
 	deckSize: string | null;
+	/** JSON array of chosen area ids */
+	areas: string | null;
+	/** JSON array of belief ids in the order they're dealt */
+	order: string | null;
 }
 
 export interface AnswerInput {

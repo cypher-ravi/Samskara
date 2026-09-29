@@ -99,7 +99,7 @@
 				...s,
 				x,
 				y,
-				width: Math.min(11, 1.6 + s.rules.length * 1.4),
+				width: Math.min(4.2, 0.9 + s.rules.length * 0.45),
 				tone: s.drop > s.mine ? 'drop' : s.mine > s.drop ? 'mine' : 'mixed',
 				d: `M ${CX} ${GROUND + 2} C ${CX} ${GROUND + 62}, ${x} ${y - 84}, ${x} ${y}`
 			};
@@ -137,25 +137,8 @@
 {#if carried.length}
 	<div class="roots-wrap">
 		<svg {viewBox} class="roots" role="group" aria-label="Your roots map: {carried.length} beliefs and the {roots.length} places they came from">
-			<defs>
-				<filter id="leafglow" x="-80%" y="-80%" width="260%" height="260%">
-					<feGaussianBlur stdDeviation="3.2" result="b" />
-					<feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
-				</filter>
-				<linearGradient id="horizon" x1="0" x2="1">
-					<stop offset="0" class="stop-fade" />
-					<stop offset="0.5" class="stop-sun" />
-					<stop offset="1" class="stop-fade" />
-				</linearGradient>
-				<radialGradient id="baseglow">
-					<stop offset="0" class="stop-sun" />
-					<stop offset="1" class="stop-fade" />
-				</radialGradient>
-			</defs>
-
 			<!-- ground -->
-			<ellipse cx={CX} cy={GROUND} rx="190" ry="26" fill="url(#baseglow)" opacity="0.45" />
-			<rect x="20" y={GROUND} width={W - 40} height="1.5" fill="url(#horizon)" />
+			<line x1="20" y1={GROUND} x2={W - 20} y2={GROUND} class="ground" />
 			<text x="24" y={minY + 24} class="zone">What you carry</text>
 			<text x="24" y={GROUND + 22} class="zone">Where it came from</text>
 
@@ -174,17 +157,15 @@
 				>
 					<path d={s.d} class="root-line" style="stroke-width:{s.width}" />
 					<path d={s.d} class="hit" />
-					<circle cx={s.x} cy={s.y} r="3.5" class="root-tip" />
+					<circle cx={s.x} cy={s.y} r="2.5" class="root-tip" />
 					<text x={s.x} y={s.y + 22} class="root-label">{s.short}</text>
 					<text x={s.x} y={s.y + 39} class="root-count">{s.rules.length}</text>
 				</g>
 			{/each}
 
 			<!-- trunk -->
-			<path
-				class="trunk"
-				d="M {CX - 13} {GROUND + 3} C {CX - 6} {GROUND - 30}, {CX - 6} {TOP + 22}, {CX - 4} {TOP} L {CX + 4} {TOP} C {CX + 6} {TOP + 22}, {CX + 6} {GROUND - 30}, {CX + 13} {GROUND + 3} Z"
-			/>
+			<path class="trunk" d="M {CX - 7} {GROUND} C {CX - 3} {GROUND - 28}, {CX - 3} {TOP + 20}, {CX - 1.5} {TOP}" />
+			<path class="trunk" d="M {CX + 7} {GROUND} C {CX + 3} {GROUND - 28}, {CX + 3} {TOP + 20}, {CX + 1.5} {TOP}" />
 
 			<!-- twigs, then crown leaves -->
 			{#each crown as p (p.rule.id)}
@@ -205,10 +186,11 @@
 					>
 						<circle r="17" class="hit" />
 						{#if p.rule.answer!.choice === 'mine'}
-							<path d={leafPath(leafSize(p.rule))} filter="url(#leafglow)" />
+							<path d={leafPath(leafSize(p.rule))} />
 							<path d="M0 {-leafSize(p.rule) * 0.8} L0 {leafSize(p.rule) * 0.8}" class="vein" />
 						{:else}
 							<circle r={5 + p.rule.answer!.pull * 2} />
+							<circle r="1.6" class="bud-dot" />
 						{/if}
 					</g>
 				</g>
@@ -238,10 +220,10 @@
 	</div>
 
 	<div class="roots-legend">
-		<span><i class="lg mine"></i>Glowing leaf: a belief you keep</span>
+		<span><i class="lg mine"></i>Leaf on the tree: a belief you keep</span>
 		<span><i class="lg unsure"></i>Bud: still deciding</span>
 		<span><i class="lg drop"></i>Fallen leaf: a belief you let go</span>
-		<span><i class="lg root"></i>Thicker root: more beliefs came from there</span>
+		<span><i class="lg root"></i>Heavier root: more beliefs came from there</span>
 	</div>
 
 	<div class="roots-panel" aria-live="polite">
@@ -269,63 +251,57 @@
 	.roots-wrap {
 		border: 1px solid var(--line);
 		border-radius: 20px;
-		background: linear-gradient(180deg, var(--glass-2), rgba(255, 170, 90, 0.05));
+		background: var(--glass-2);
 		padding: 8px 4px 0;
 		overflow: hidden;
 	}
-	.roots {
-		display: block;
-		width: 100%;
-		height: auto;
-		max-width: 100%;
-	}
-	.stop-fade { stop-color: var(--sun); stop-opacity: 0; }
-	.stop-sun { stop-color: var(--sun); stop-opacity: 0.8; }
+	.roots { display: block; width: 100%; height: auto; max-width: 100%; }
 	.zone {
 		font-family: var(--mono);
-		font-size: 13px;
+		font-size: 12px;
 		letter-spacing: 0.14em;
 		text-transform: uppercase;
 		fill: var(--faint);
 	}
-	.trunk { fill: #6b3a36; stroke: rgba(255, 190, 140, 0.25); stroke-width: 1; }
-	.twig {
-		fill: none;
-		stroke: rgba(230, 170, 140, 0.35);
-		stroke-width: 1.4;
-		transition: opacity 0.25s;
-	}
+	.ground { stroke: var(--line-2); stroke-width: 1; }
+	.trunk { fill: none; stroke: var(--muted); stroke-width: 1.4; stroke-linecap: round; opacity: 0.85; }
+	.twig { fill: none; stroke: var(--muted); stroke-width: 1; opacity: 0.45; transition: opacity 0.25s; }
 	.hit { fill: transparent; stroke: transparent; stroke-width: 22; }
 	.root { cursor: pointer; transition: opacity 0.25s; }
-	.root-line { fill: none; stroke-linecap: round; opacity: 0.8; transition: stroke-width 0.2s; }
+	.root-line { fill: none; stroke-linecap: round; opacity: 0.7; transition: opacity 0.2s; }
 	.tone-mine .root-line, .tone-mine .root-tip { stroke: var(--saffron); fill: var(--saffron); }
 	.tone-drop .root-line, .tone-drop .root-tip { stroke: var(--lotus); fill: var(--lotus); }
-	.tone-mixed .root-line, .tone-mixed .root-tip { stroke: #b98e8c; fill: #b98e8c; }
+	.tone-mixed .root-line, .tone-mixed .root-tip { stroke: var(--muted); fill: var(--muted); }
 	.root .root-line { fill: none; }
-	.root-label { font-family: var(--body); font-size: 15px; font-weight: 600; fill: var(--ink); text-anchor: middle; }
-	.root-count { font-family: var(--mono); font-size: 12px; fill: var(--faint); text-anchor: middle; }
-	.root.on .root-line { opacity: 1; filter: drop-shadow(0 0 6px currentColor); }
-	.leaf { cursor: pointer; transition: opacity 0.25s; transform-box: fill-box; transform-origin: center; animation: grow 0.6s ease-out both; animation-delay: calc(var(--i) * 45ms + 150ms); }
-	.leaf.mine path:not(.vein) { fill: var(--saffron); }
-	.leaf.unsure circle:not(.hit) { fill: var(--ash); stroke: rgba(255, 235, 220, 0.35); stroke-width: 1; }
-	.leaf.drop { animation-name: fall; animation-duration: 0.9s; }
-	.leaf.drop path:not(.vein) { fill: var(--lotus); opacity: 0.78; }
-	.vein { stroke: rgba(42, 18, 36, 0.45); stroke-width: 1; fill: none; }
-	.leaf.on path:not(.vein), .leaf.on circle:not(.hit) { stroke: var(--ink); stroke-width: 1.6; }
+	.root-label { font-family: var(--body); font-size: 13.5px; font-weight: 600; fill: var(--ink); text-anchor: middle; }
+	.root-count { font-family: var(--mono); font-size: 11px; fill: var(--faint); text-anchor: middle; }
+	.root.on .root-line { opacity: 1; }
+	.root.on .root-label { fill: var(--saffron); }
+	.leaf { cursor: pointer; transition: opacity 0.25s; transform-box: fill-box; transform-origin: center; animation: grow 0.5s ease-out both; animation-delay: calc(var(--i) * 40ms + 120ms); }
+	.leaf.mine path:not(.vein) { fill: rgba(246, 166, 64, 0.14); stroke: var(--saffron); stroke-width: 1.3; }
+	.leaf.mine .vein { stroke: var(--saffron); opacity: 0.6; }
+	.leaf.unsure circle:not(.hit):not(.bud-dot) { fill: none; stroke: var(--muted); stroke-width: 1.2; }
+	.leaf.unsure .bud-dot { fill: var(--muted); }
+	.leaf.drop { animation-name: fall; animation-duration: 0.7s; }
+	.leaf.drop path:not(.vein) { fill: rgba(238, 143, 174, 0.1); stroke: var(--lotus); stroke-width: 1.2; }
+	.leaf.drop .vein { stroke: var(--lotus); opacity: 0.5; }
+	.vein { stroke-width: 0.8; fill: none; }
+	.leaf.on path:not(.vein), .leaf.on circle:not(.hit):not(.bud-dot) { stroke-width: 2.2; }
 	.fade { transition: opacity 0.25s; }
 	.dim { opacity: 0.18; }
 	.root:focus-visible, .leaf:focus-visible { outline: none; }
-	.root:focus-visible .root-label, .leaf:focus-visible { filter: drop-shadow(0 0 4px var(--saffron)); }
-	@keyframes grow { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-	@keyframes fall { from { transform: translateY(-120px) rotate(-60deg); opacity: 0; } to { transform: none; opacity: 1; } }
+	.root:focus-visible .root-label { fill: var(--saffron); }
+	.leaf:focus-visible path:not(.vein), .leaf:focus-visible circle:not(.hit) { stroke-width: 2.4; }
+	@keyframes grow { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+	@keyframes fall { from { transform: translateY(-36px) rotate(-30deg); opacity: 0; } to { transform: none; opacity: 1; } }
 	@media (prefers-reduced-motion: reduce) { .leaf { animation: none; } }
 
 	.roots-legend { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 13px; color: var(--muted); }
-	.lg { display: inline-block; width: 12px; height: 12px; margin-right: 7px; vertical-align: -1px; border-radius: 50% 0; }
-	.lg.mine { background: var(--saffron); box-shadow: 0 0 8px rgba(246, 166, 64, 0.7); }
-	.lg.drop { background: var(--lotus); transform: rotate(40deg); }
-	.lg.unsure { background: var(--ash); border-radius: 50%; }
-	.lg.root { height: 4px; width: 16px; border-radius: 3px; background: #b98e8c; vertical-align: 3px; }
+	.lg { display: inline-block; width: 10px; height: 13px; margin-right: 7px; vertical-align: -2px; border-radius: 50%; }
+	.lg.mine { border: 1.3px solid var(--saffron); background: rgba(246, 166, 64, 0.14); }
+	.lg.drop { border: 1.2px solid var(--lotus); background: rgba(238, 143, 174, 0.1); transform: rotate(50deg); }
+	.lg.unsure { width: 11px; height: 11px; border: 1.2px solid var(--muted); }
+	.lg.root { width: 16px; height: 0; border-radius: 0; border-top: 2.5px solid var(--muted); vertical-align: 3px; }
 
 	.roots-panel {
 		display: flex; flex-direction: column; gap: 8px; padding: 16px 18px; min-height: 64px;

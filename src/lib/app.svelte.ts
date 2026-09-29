@@ -1,20 +1,20 @@
 import { db } from './db/client';
 import { isComplete } from './logic';
-import { DECK_ORDER, DECK_SIZES, type DeckSize } from './data/seed';
+import { AREAS, DECK_SIZES, type DeckSize } from './data/seed';
+import { adaptOrder, buildOrder, repairOrder } from './deck';
 import type { Choice, Pull, Rule, Snapshot, Source } from './db/types';
 
-const RANK = new Map(DECK_ORDER.map((id, i) => [id, i]));
-
-/** The cards dealt for a deck size: starting rules in priority order, then any the person added. */
-function dealDeck(rules: Rule[], size: DeckSize): Rule[] {
-	const cards = DECK_SIZES.find((d) => d.id === size)?.cards ?? 12;
-	const seeded = rules
-		.filter((r) => !r.isCustom)
-		.sort((a, b) => (RANK.get(a.id) ?? 999) - (RANK.get(b.id) ?? 999));
-	return [...seeded.slice(0, cards), ...rules.filter((r) => r.isCustom)];
-}
-
 const isDeckSize = (v: unknown): v is DeckSize => v === 'quick' || v === 'medium' || v === 'full';
+const AREA_IDS = new Set(AREAS.map((a) => a.id));
+
+function parseList(json: string | null): string[] {
+	try {
+		const v = JSON.parse(json ?? '[]');
+		return Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : [];
+	} catch {
+		return [];
+	}
+}
 
 /** App-wide state. Every change is written to the local SQLite database as it happens. */
 class AppState {
@@ -26,12 +26,28 @@ class AppState {
 	sources = $state<Source[]>([]);
 	cursor = $state(0);
 	deckSize = $state<DeckSize>('medium');
+	/** Areas of life the person chose to look at. Empty means they haven't chosen yet. */
+	areas = $state<string[]>([]);
+	/** Belief ids in the order they're dealt. */
+	order = $state<string[]>([]);
+	/** True while the area picker is open for a change of areas. */
+	pickingAreas = $state(false);
 
-	deck = $derived(dealDeck(this.rules, this.deckSize));
+	/** The cards dealt for this session: the first N of the order, then any beliefs the person added. */
+	deck = $derived.by(() => {
+		const byId = new Map(this.rules.map((r) => [r.id, r]));
+		const cards = DECK_SIZES.find((d) => d.id === this.deckSize)?.cards ?? null;
+		const ids = cards === null ? this.order : this.order.slice(0, cards);
+		const seeded = ids.map((id) => byId.get(id)).filter((r): r is Rule => !!r);
+		return [...seeded, ...this.rules.filter((r) => r.isCustom)];
+	});
 	sortedCount = $derived(this.rules.filter((r) => isComplete(r.answer)).length);
 	current = $derived(this.deck[this.cursor]);
-	/** Starting rules not yet dealt or not yet sorted, for the "go deeper" prompt. */
-	remaining = $derived(this.rules.filter((r) => !isComplete(r.answer)).length);
+	/** Beliefs in the chosen areas still to sort, for the "go deeper" prompt. */
+	remaining = $derived.by(() => {
+		const byId = new Map(this.rules.map((r) => [r.id, r]));
+		return this.order.filter((id) => !isComplete(byId.get(id)?.answer)).length;
+	});
 
 	#reflectionTimers = new Map<string, ReturnType<typeof setTimeout>>();
 
@@ -50,6 +66,14 @@ class AppState {
 		this.sources = s.sources;
 		this.rules = s.rules;
 		this.deckSize = isDeckSize(s.deckSize) ? s.deckSize : 'medium';
+		this.areas = parseList(s.areas).filter((a) => AREA_IDS.has(a));
+		const saved = parseList(s.order);
+		this.order = this.areas.length
+			? saved.length
+				? repairOrder(saved, this.areas, s.rules)
+				: buildOrder(this.areas, s.rules)
+			: [];
+		this.pickingAreas = false;
 		this.cursor = Math.max(0, Math.min(s.cursor, this.deck.length - 1));
 	}
 
@@ -80,6 +104,27 @@ class AppState {
 			rule.answer.sources = [];
 		}
 		return this.saveAnswer(rule);
+	}
+
+	setSources(rule: Rule, sources: string[]) {
+		if (!rule.answer || rule.answer.pull === 0) return;
+		rule.answer.sources = [...sources];
+		return this.saveAnswer(rule);
+	}
+
+	/** Start (or restart) a session on the chosen areas, in a fresh mixed order. */
+	chooseAreas(ids: string[]) {
+		this.areas = ids.filter((a) => AREA_IDS.has(a));
+		this.order = buildOrder(this.areas, this.rules);
+		this.pickingAreas = false;
+		this.write(() => db.setMeta('areas', JSON.stringify(this.areas)));
+		this.saveOrder();
+		this.goTo(0);
+	}
+
+	private saveOrder() {
+		const order = JSON.stringify(this.order);
+		this.write(() => db.setMeta('order', order));
 	}
 
 	toggleSource(rule: Rule, sourceId: string) {
@@ -128,7 +173,14 @@ class AppState {
 	/** Records the finished card in history. Returns true if this was the last card. */
 	finishCurrent(): boolean {
 		const rule = this.current;
-		if (rule && isComplete(rule.answer)) this.write(() => db.logAnswer(rule.id));
+		if (rule && isComplete(rule.answer)) {
+			this.write(() => db.logAnswer(rule.id));
+			const at = this.order.indexOf(rule.id);
+			if (at >= 0) {
+				this.order = adaptOrder(this.order, at + 1, this.rules);
+				this.saveOrder();
+			}
+		}
 		if (this.cursor >= this.deck.length - 1) return true;
 		this.goTo(this.cursor + 1);
 		return false;

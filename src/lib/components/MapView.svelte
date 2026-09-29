@@ -55,6 +55,12 @@
 		window.scrollTo({ top: 0 });
 	}
 
+	function otherArea() {
+		app.pickingAreas = true;
+		goto(`${base}/`);
+		window.scrollTo({ top: 0 });
+	}
+
 	async function reset() {
 		await app.reset();
 		confirmReset = false;
@@ -201,16 +207,23 @@
 		<a class="btn" href="{base}/" style="text-decoration:none">Start sorting my own</a>
 	</div>
 {:else}
-	{#if app.deckSize !== 'full' && app.remaining > 0}
+	{#if app.remaining > 0 || app.areas.length < 10}
 		<div class="deeper">
 			<div>
 				<h3>Ready to go deeper?</h3>
 				<p class="prompt">
-					There {app.remaining === 1 ? 'is 1 more belief' : `are ${app.remaining} more beliefs`} you haven't
-					sorted yet. Your map will grow as you add them.
+					{#if app.remaining > 0}
+						There {app.remaining === 1 ? 'is 1 more belief' : `are ${app.remaining} more beliefs`} in your areas
+						you haven't sorted yet. Your map grows as you add them.
+					{:else}
+						You've sorted everything in your areas. Add another part of life to see more of your map.
+					{/if}
 				</p>
 			</div>
-			<button class="btn" onclick={goDeeper}>Sort {app.remaining} more</button>
+			<div class="row-actions">
+				{#if app.remaining > 0}<button class="btn" onclick={goDeeper}>Sort {app.remaining} more</button>{/if}
+				<button class="linkbtn quiet" onclick={otherArea}>Look at another area</button>
+			</div>
 		</div>
 	{/if}
 	<div class="maptools">

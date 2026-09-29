@@ -62,7 +62,7 @@ function migrate(): void {
 	}
 }
 
-/** Insert any seed rows that are missing. Existing rows (and the person's answers) are untouched. */
+/** Insert or refresh the seed rows. The person's answers and their own beliefs are never touched. */
 function seed(): void {
 	db.transaction(() => {
 		SEED_SOURCES.forEach((s, i) =>
@@ -71,11 +71,18 @@ function seed(): void {
 				bind: [s.id, s.label, i]
 			})
 		);
+		// Seeded beliefs are refreshed on every load so wording fixes reach everyone. Answers are untouched.
 		SEED_RULES.forEach((r, i) =>
 			db.exec({
-				sql: `INSERT OR IGNORE INTO rules
+				sql: `INSERT INTO rules
 				      (id, category, text, suggested_rewrite, suggested_experiment, is_custom, position)
-				      VALUES (?, ?, ?, ?, ?, 0, ?)`,
+				      VALUES (?, ?, ?, ?, ?, 0, ?)
+				      ON CONFLICT (id) DO UPDATE SET
+				        category = excluded.category, text = excluded.text,
+				        suggested_rewrite = excluded.suggested_rewrite,
+				        suggested_experiment = excluded.suggested_experiment,
+				        position = excluded.position
+				      WHERE rules.is_custom = 0`,
 				bind: [r.id, r.category, r.text, r.rewrite, r.experiment, i]
 			})
 		);
@@ -136,7 +143,9 @@ function snapshot(): Snapshot {
 		sources,
 		rules,
 		cursor: Number.isFinite(cursor) ? cursor : 0,
-		deckSize: getMeta('deckSize')
+		deckSize: getMeta('deckSize'),
+		areas: getMeta('areas'),
+		order: getMeta('order')
 	};
 }
 
@@ -200,7 +209,7 @@ function addRule(text: string): Rule {
 	const clean = text.trim().replace(/\s+/g, ' ').slice(0, 160);
 	if (clean.length < 4) throw new Error('Write the belief in a few words first.');
 	const id = `c_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
-	const position = Number(db.selectValue('SELECT COALESCE(MAX(position), 0) + 1 FROM rules'));
+	const position = Number(db.selectValue('SELECT COALESCE(MAX(position), 0) + 1000 FROM rules'));
 	db.exec({
 		sql: `INSERT INTO rules (id, category, text, is_custom, position) VALUES (?, 'Your own', ?, 1, ?)`,
 		bind: [id, /[.?!]$/.test(clean) ? clean : `${clean}.`, position]
